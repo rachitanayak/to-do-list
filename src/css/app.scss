@@ -1,0 +1,74 @@
+@use "./variables";
+@use "./add_task";
+@use "./tasks";
+
+
+// application-level css
+body {
+    background-color: variables.$white-color;
+    font-family: "Instrument Serif", serif;
+    letter-spacing: 0.1rem;
+    padding: 40px;
+}
+
+//input style
+input[type="checkbox"]{
+    cursor: pointer;
+    height: 2vh;
+    width: 2vw;
+    accent-color: variables.$primary-color;
+    border: 1px solid variables.$primary-color
+}
+input[type="text"] {
+    border: 1px solid variables.$primary-color;
+    border-radius: 5px;
+}
+
+//button styles
+.btn {
+    border: 1px solid variables.$primary-color;
+    border-radius: 5px;
+    font-size: 14px;
+    height: 2rem;
+    padding: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+.btn:hover {
+    opacity: 0.9;
+}
+.btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+}
+
+.btn.btn--primary {
+    background-color: variables.$primary-color;
+    color: variables.$white-color; 
+}
+
+.btn.btn--secondary {
+    color: variables.$primary-color;
+}
+
+.btn.btn--icon {
+    border: none;
+    background: transparent;
+    padding: 0px;
+}
+
+
+//main page css
+.page-wrapper {
+    display: flex;
+    flex-direction: column;
+
+    .page__title {
+        display: flex;
+        justify-content: center;
+        color: variables.$primary-color;
+        margin-bottom: 3rem;
+    }
+}
+

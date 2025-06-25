@@ -8,13 +8,17 @@ function TaskList() {
   const tasks = useContext(TasksContext);
 
   return (
-    <ul>
-      {tasks?.map(({ id, name, status }) => (
-        <li key={id}>
-          <TaskItem id={id} name={name} status={status} />
-        </li>
-      ))}
-    </ul>
+    <div className="tasks">
+      {tasks && tasks.length !== undefined && tasks.length > 0 ? (
+        <ul>
+          {tasks?.map(({ id, name, status }) => (
+            <li key={id} className="task__item">
+              <TaskItem id={id} name={name} status={status} />
+            </li>
+          ))}
+        </ul>
+      ) : null}
+    </div>
   );
 }
 
