@@ -6,8 +6,11 @@ import { STATUS } from "../utils/constants";
 import { TasksDispatchContext } from "../context/TasksContext";
 
 import Button from "./Button";
+
 import { EditIcon } from "../icons/EditIcon";
 import { DeleteIcon } from "../icons/DeleteIcon";
+import { CancelIcon } from "../icons/CancelIcon";
+import { SaveIcon } from "../icons/SaveIcon";
 
 function TaskItem({ id, name, status }: Task) {
   const [taskName, setTaskName] = useState(name);
@@ -15,13 +18,14 @@ function TaskItem({ id, name, status }: Task) {
 
   const dispatch = useContext(TasksDispatchContext);
 
+  const isCompleted = status === STATUS["Completed"];
+
   return (
     <>
-      {isEditing && <p>Press the enter key to save changes</p>}
       <div className="task__name">
         <input
           type="checkbox"
-          checked={status === STATUS["Completed"]}
+          checked={isCompleted}
           name="task-status"
           onChange={() =>
             dispatch &&
@@ -29,10 +33,9 @@ function TaskItem({ id, name, status }: Task) {
               type: "update",
               payload: {
                 id,
-                status:
-                  status === STATUS["NotStarted"]
-                    ? STATUS["Completed"]
-                    : STATUS["NotStarted"],
+                status: isCompleted
+                  ? STATUS["NotStarted"]
+                  : STATUS["Completed"],
               },
             })
           }
@@ -40,55 +43,58 @@ function TaskItem({ id, name, status }: Task) {
         {isEditing ? (
           <input
             type="text"
+            name="task-name-edit"
             onChange={(e) => setTaskName(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                if (dispatch)
-                  dispatch({
-                    type: "update",
-                    payload: { id, name: taskName },
-                  });
-                setIsEditing(false);
-              }
-            }}
             value={taskName}
           ></input>
         ) : (
-          <span
-            className={`${
-              status === STATUS["Completed"] ? "task--name--checked" : ""
-            }`}
-          >
+          <span className={`${isCompleted ? "task--name--checked" : ""}`}>
             {taskName}
           </span>
         )}
       </div>
-
-      <div className="task__action__buttons">
-        {isEditing ? (
+      {!isCompleted ? (
+        <div className="task__action__buttons">
+          {isEditing ? (
+            <>
+              <Button
+                type="icon"
+                onClick={() => {
+                  if (dispatch)
+                    dispatch({
+                      type: "update",
+                      payload: { id, name: taskName },
+                    });
+                  setIsEditing(false);
+                }}
+              >
+                <SaveIcon />
+              </Button>
+              <Button
+                type="icon"
+                onClick={() => {
+                  setTaskName(name);
+                  setIsEditing(false);
+                }}
+              >
+                <CancelIcon />
+              </Button>
+            </>
+          ) : (
+            <Button type="icon" onClick={() => setIsEditing(true)}>
+              <EditIcon />
+            </Button>
+          )}
           <Button
             type="icon"
-            onClick={() => {
-              setTaskName(name);
-              setIsEditing(false);
-            }}
+            onClick={() =>
+              dispatch && dispatch({ type: "delete", payload: { id } })
+            }
           >
-            CANCEL
+            <DeleteIcon />
           </Button>
-        ) : (
-          <Button type="icon" onClick={() => setIsEditing(true)}>
-            <EditIcon />
-          </Button>
-        )}
-        <Button
-          type="icon"
-          onClick={() =>
-            dispatch && dispatch({ type: "delete", payload: { id } })
-          }
-        >
-          <DeleteIcon />
-        </Button>
-      </div>
+        </div>
+      ) : null}
     </>
   );
 }

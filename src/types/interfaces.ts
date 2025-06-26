@@ -13,9 +13,18 @@ export interface Action {
   payload: Partial<Task>;
 }
 
+export interface TasksProviderProps {
+  children: ReactNode;
+}
+
 export interface ButtonProps {
   type: button;
   disabled?: boolean;
   children?: ReactNode;
-  onClick: MouseEventHandler<HTMLButtonElement>;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+}
+
+export interface IconProps {
+  width?: number;
+  height?: number;
 }

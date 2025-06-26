@@ -1,12 +1,11 @@
-import {
-  createContext,
-  useReducer,
-  type ReactNode,
-  type Dispatch,
-} from "react";
+import { createContext, useReducer, type Dispatch } from "react";
 
 import { STATUS } from "../utils/constants";
-import { type Task, type Action } from "../types/interfaces";
+import {
+  type Task,
+  type Action,
+  type TasksProviderProps,
+} from "../types/interfaces";
 import { v4 as uuidv4 } from "uuid";
 
 // Contexts
@@ -44,10 +43,6 @@ const tasksReducer = (tasks: Task[], action: Action): Task[] => {
 };
 
 // Provider
-interface TasksProviderProps {
-  children: ReactNode;
-}
-
 function TasksProvider({ children }: TasksProviderProps) {
   const [tasks, dispatch] = useReducer(tasksReducer, []);
 
