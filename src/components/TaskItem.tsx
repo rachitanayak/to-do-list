@@ -23,23 +23,25 @@ function TaskItem({ id, name, status }: Task) {
   return (
     <>
       <div className="task__name">
-        <input
-          type="checkbox"
-          checked={isCompleted}
-          name="task-status"
-          onChange={() =>
-            dispatch &&
-            dispatch({
-              type: "update",
-              payload: {
-                id,
-                status: isCompleted
-                  ? STATUS["NotStarted"]
-                  : STATUS["Completed"],
-              },
-            })
-          }
-        ></input>
+        <div className="task__checkbox">
+          <input
+            type="checkbox"
+            checked={isCompleted}
+            name="task-status"
+            onChange={() =>
+              dispatch &&
+              dispatch({
+                type: "update",
+                payload: {
+                  id,
+                  status: isCompleted
+                    ? STATUS["NotStarted"]
+                    : STATUS["Completed"],
+                },
+              })
+            }
+          ></input>
+        </div>
         {isEditing ? (
           <input
             type="text"
